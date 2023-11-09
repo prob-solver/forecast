@@ -1,0 +1,3 @@
+class TomorrowForecastBlueprint
+
+end
