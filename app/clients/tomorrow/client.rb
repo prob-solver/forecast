@@ -5,22 +5,16 @@ module Tomorrow
     base_uri 'api.tomorrow.io'
     API_KEY = ENV.fetch('TOMORROW_API_KEY')
 
-    def initialize(zip)
-      @zip = zip
+    def self.forecast(zip)
+      self.get("/v4/weather/forecast", query(location: zip))
     end
 
-    def forecast
-      self.class.get("/v4/weather/forecast", query(location: zip))
-    end
-
-    private
-
-    attr_reader :zip
-
-    def query(query_hash={})
+    def self.query(query_hash={})
       {
         query: query_hash.merge(apikey: API_KEY)
       }
     end
+    private_class_method :query
+
   end
 end

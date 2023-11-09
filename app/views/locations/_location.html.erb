@@ -37,7 +37,11 @@
     new Autocomplete(document.getElementById("autocomplete_location"), opts);
 
     function showForecast(item) {
-      $.fetch()
+      $.get("/api/v1/locations/" + item.id + "/forecasts").done(
+        function (data) {
+          $("#forecast-container").html($("<pre></pre>").append(JSON.stringify(data)));
+        }
+      )
     }
   </script>
 <% end %>

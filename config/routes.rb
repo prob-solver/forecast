@@ -10,6 +10,8 @@ Rails.application.routes.draw do
         collection do
           get :suggestions
         end
+
+        resources :forecasts
       end
     end
   end

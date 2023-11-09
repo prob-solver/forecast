@@ -1,7 +1,7 @@
 class Location
   include ActiveModel::Model
 
+  attr_accessor :place, :id
 
-  attr_accessor :postal_code, :place, :id
-
+  delegate :postal_code, to: :place
 end

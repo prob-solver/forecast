@@ -1,12 +1,12 @@
-class Api::V1::LocationsController < ApplicationController
+class Api::V1::LocationsController < Api::V1::BaseController
 
   def suggestions
-    suggestions = LocationSuggestionService.search_place_index_for_suggestions(params[:query])
+    suggestions = LocationSuggestionService.search_suggestions(params[:query])
     render json: format_suggestions(suggestions)
   end
 
   def show
-    location = LocationSuggestionService.get_place_with_postal_code(params[:id])
+    location = LocationSuggestionService.find_location!(params[:id])
     render json: location
   end
 

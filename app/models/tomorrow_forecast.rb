@@ -1,11 +1,7 @@
 class TomorrowForecast
   include ActiveModel::Model
 
-  attr_reader :data
-
-  def initialize(data={})
-    @data = data
-  end
+  attr_accessor :data, :fetch_from
 
   def current_temp
     @data.dig('timelines', 'minutely', 0, 'temperature')
