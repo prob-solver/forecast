@@ -23,7 +23,6 @@ gem 'redis', '~> 4.0'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'httparty'
 gem 'geocoder'
-gem 'blueprinter'
 gem 'aws-sdk-locationservice'
 
 # Use Active Storage variant

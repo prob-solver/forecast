@@ -8,9 +8,19 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+    <%= yield :head %>
   </head>
 
   <body>
-    <%= yield %>
+  <main>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <%= render "layouts/global_nav" %>
+    </nav>
+  </main>
+    <header class="py-3 mb-3 border-bottom">
+      <%= yield %>
+    </header>
+
   </body>
 </html>

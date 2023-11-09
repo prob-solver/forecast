@@ -1,0 +1,43 @@
+<h2>Location</h2>
+
+<%= text_field_tag "autocomplete_location",
+                   params[:autocomplete_location],
+                   class: "form-control",
+                   placeholder: "type in address",
+                   "data-server": "/api/v1/locations/suggestions",
+                   "data-suggestions-threshold" => 4,
+                   "data-not-found-message" => "could not find address",
+                   "data-live-server" => true,
+                   "data-value-field" => "id",
+                   "data-label-field"=>"text",
+                   "data-ignore-enter"=> true,
+                   "data-full-width" => true
+%>
+
+<% if @location %>
+  <table class="table">
+    <tr>
+      <th>Address</th>
+      <td><%= link_to @location.address, location_path(@location.id) %></td>
+    </tr>
+    <tr>
+      <th>Zip</th>
+      <td><%= @location.postal_code %></td>
+    </tr>
+  </table>
+<% end %>
+
+
+<% content_for :head do %>
+  <script type="module">
+    import Autocomplete from "https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-autocomplete@master/autocomplete.js";
+    const opts = {
+      onSelectItem: showForecast,
+    };
+    new Autocomplete(document.getElementById("autocomplete_location"), opts);
+
+    function showForecast(item) {
+      $.fetch()
+    }
+  </script>
+<% end %>
