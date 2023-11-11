@@ -41,7 +41,6 @@ class LocationSuggestionService
     end
   end
 
-
   private
 
   def self.opts(options={})

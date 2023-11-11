@@ -14,6 +14,14 @@
                    "data-full-width" => true
 %>
 
+<% if @histories.present? %>
+<ul>
+  <% @histories.each do |history| %>
+    <li><%= link_to history["label"], "javascript: void(0);", class: 'location-history', "data-location-id" => history['id'] %></li>
+  <% end %>
+</ul>
+<% end %>
+
 <% if @location %>
   <table class="table">
     <tr>
@@ -29,19 +37,61 @@
 
 
 <% content_for :head do %>
+  <link href='https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.js'></script>
+
   <script type="module">
     import Autocomplete from "https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-autocomplete@master/autocomplete.js";
+
     const opts = {
       onSelectItem: showForecast,
     };
     new Autocomplete(document.getElementById("autocomplete_location"), opts);
 
-    function showForecast(item) {
-      $.get("/api/v1/locations/" + item.id + "/forecasts").done(
-        function (data) {
-          $("#forecast-container").html($("<pre></pre>").append(JSON.stringify(data)));
-        }
-      )
+
+    async function showForecast(location) {
+      renderChart(location);
+      renderMap(location);
+      renderForecastInfo();
     }
+
+    function getLocation(location_id) {
+      return $.get(`/api/v1/locations/${location_id}`)
+    }
+
+    async function renderMap(location) {
+      const loc = await getLocation(location.id);
+      console.log(loc)
+      const position = loc.place.geometry.point;
+
+      const apiKey = "v1.public.eyJqdGkiOiJhOGMwNmMwNy05MjM2LTQ0NzktYmNkMS03N2MyNWE3NzcxZDUifWULdYKeXFjvGZcTmGXNl5Wdc4z90zmfEc3lUJg_Q068lYX6jhzjLG_Bv3ok6R8tD23E2OSfdq2X34SkbyYluxehpzFWoMrNCRMLsWhy-91PhWGBJg00SM3fTbCQq7E5M0HnHrr2le0YouhDzxzVbfaNqkB_vB-iAEoCiOSdY4UmOtXfeD8OL5LRVBEqgdlT1StjyYfDTZ6SYpMsakn_t3HzhzFaamvpH2qC8udqQw92lAZkOlOLVJc4TeBd5yk2_gm-5G12bSIbngQtW5uKFBM24lG2gD1ACOe7Ei9Wo6uc1tKjTKQqfeLE6sFdXeS3jH5uQhsUhxwKVeKkYZXPRMw.NjAyMWJkZWUtMGMyOS00NmRkLThjZTMtODEyOTkzZTUyMTBi";
+      const mapName = "explore.map.Esri";
+      const region = "us-east-2";
+
+      console.log(location);
+      let map = new maplibregl.Map({
+        "container": 'map',
+        "style": `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor?key=${apiKey}`,
+        "center": position, // starting position [lng, lat]
+        "zoom": 10 // starting zoom
+      });
+
+      let marker = new maplibregl.Marker()
+        .setLngLat(position)
+        .addTo(map);
+
+      map.addControl(new maplibregl.NavigationControl(), "top-left");
+    }
+
+    $(document).ready(function() {
+      $(".location-history").on("click", function() {
+        console.log($(this).data())
+        console.log("haha")
+        showForecast({id: $(this).data("location-id") });
+      })
+    })
+
+
+
   </script>
 <% end %>

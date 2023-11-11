@@ -30,7 +30,7 @@ class ForecastService
   def get_remote_forecast
     resp = Tomorrow::Client.forecast(location.postal_code)
     if resp.success?
-      resp.to_hash
+      resp.to_hash.merge(load_at: Time.now)
     else
       raise ForestBadRequest, {service: "tomorrow", code: resp.code, message: resp.message}.as_json
     end

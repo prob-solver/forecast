@@ -1,7 +1,12 @@
 <div class="container">
+  <%= render 'location' %>
+
+  <hr/>
   <div class="row">
     <div class="col-4">
-      <%= render 'location' %>
+      <h2>Map</h2>
+      <div id='map' style='height: 100vh;'></div>
+
     </div>
     <div class="col-8">
       <%= render "forecast" %>

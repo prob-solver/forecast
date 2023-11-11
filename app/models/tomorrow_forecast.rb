@@ -3,15 +3,23 @@ class TomorrowForecast
 
   attr_accessor :data, :fetch_from
 
+  def minutely_timelines
+    @data.dig('timelines', 'minutely')
+  end
+
+  def daily_timelines
+    @data.dig('timelines', 'daily')
+  end
+
   def current_temp
-    @data.dig('timelines', 'minutely', 0, 'temperature')
+    minutely_timelines.dig(0, 'temperature')
   end
 
   def today_temp_high
-    @data.dig('timelines', 'daily', 0, 'values', 'temperatureMax')
+    daily_timelines.dig(0, 'values', 'temperatureMax')
   end
 
   def today_temp_low
-    @data.dig('timelines', 'daily', 0, 'values', 'temperatureApparentMin')
+    daily_timelines.dig(0, 'values', 'temperatureApparentMin')
   end
 end
