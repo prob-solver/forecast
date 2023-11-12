@@ -1,7 +1,7 @@
 class Api::V1::LocationsController < Api::V1::BaseController
 
   def suggestions
-    suggestions = LocationSuggestionService.search_suggestions(params[:query])
+    suggestions = LocationSuggestionService.search_suggestions(params.require(:query))
     render json: format_suggestions(suggestions)
   end
 

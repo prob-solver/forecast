@@ -1,6 +1,7 @@
 class LocationSuggestionService
 
   class LocationNotFound < StandardError; end
+  class InvalidQueryString < StandardError; end
 
   AWS_LOCATION_API_KEY = ENV['AWS_LOCATION_API_KEY']
   AWS_LOCATION_INDEX_NAME = ENV['AWS_LOCATION_INDEX_NAME']
@@ -9,6 +10,7 @@ class LocationSuggestionService
   # Get address suggestions from AWS Location Service
   # @Return Array(struct Aws::LocationService::Types::SearchForSuggestionsResult)
   def self.search_suggestions(query_string)
+    validate_suggestion_query!(query_string)
     resp = client.search_place_index_for_suggestions(
       opts(text: query_string, max_results: MAX_RESULTS)
     )
@@ -42,6 +44,12 @@ class LocationSuggestionService
   end
 
   private
+
+  def self.validate_suggestion_query!(query_string)
+    if query_string.blank?
+      raise InvalidQueryString, 'Query must have length at least 1'
+    end
+  end
 
   def self.opts(options={})
     options.merge(

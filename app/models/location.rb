@@ -5,7 +5,6 @@ class Location
 
   delegate :postal_code, to: :place
 
-
   def as_json_for_cookie
     {
       id: id,

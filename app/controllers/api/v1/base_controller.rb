@@ -3,8 +3,12 @@ module Api
     class BaseController < ApplicationController
       skip_forgery_protection
       layout false
-      rescue_from LocationSuggestionService::LocationNotFound, with: :record_not_found
-      rescue_from ForecastService::ForestBadRequest, with: :bad_request
+      rescue_from LocationSuggestionService::LocationNotFound,
+                  with: :record_not_found
+      rescue_from ForecastService::ForestBadRequest,
+                  LocationSuggestionService::InvalidQueryString,
+                  ActionController::ParameterMissing,
+                  with: :bad_request
 
       private
 
