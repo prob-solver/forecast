@@ -13,12 +13,19 @@
 </div>
 
 <script id="forecast-info-template" type="x-tmpl-mustache">
+  <h4>{{currentWeather}}: {{current_weather.temperature}}°F </h4>
+  <div>
+    Humidity: {{current_weather.humidity}}%
+    Wind: {{current_weather.windSpeed}} mph
+  </div>
   <table class='table'>
     <thead>
     <tr>
       {{#forecast.timelines.daily}}
       <th>
         {{#formatDate}}{{time}}{{/formatDate}}
+        <br/>
+        {{#weatherIcon}}{{values.weatherCodeMax}}{{/weatherIcon}}
       </th>
       {{/forecast.timelines.daily}}
     </tr>

@@ -22,19 +22,6 @@
 </ul>
 <% end %>
 
-<% if @location %>
-  <table class="table">
-    <tr>
-      <th>Address</th>
-      <td><%= link_to @location.address, location_path(@location.id) %></td>
-    </tr>
-    <tr>
-      <th>Zip</th>
-      <td><%= @location.postal_code %></td>
-    </tr>
-  </table>
-<% end %>
-
 
 <% content_for :head do %>
   <link href='https://unpkg.com/maplibre-gl@3.x/dist/maplibre-gl.css' rel='stylesheet' />
@@ -42,26 +29,14 @@
 
   <script type="module">
     import Autocomplete from "https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-autocomplete@master/autocomplete.js";
+    new Autocomplete(document.getElementById("autocomplete_location"), {"onSelectItem": showForecast});
 
+    // global variable map, handler of maplibregl map
     let map;
-
-    const opts = {
-      onSelectItem: showForecast,
-    };
-    new Autocomplete(document.getElementById("autocomplete_location"), opts);
-
 
     async function showForecast(location) {
       renderMap(location);
-      renderForecastInfo(location);
-    }
-
-    function getLocation(location_id) {
-      return $.get(`/api/v1/locations/${location_id}`)
-    }
-
-    function initMap(location) {
-
+      renderForecast(location);
     }
 
     async function renderMap(location) {
@@ -92,8 +67,6 @@
 
     $(document).ready(function() {
       $(".location-history").on("click", function() {
-        console.log($(this).data())
-        console.log("haha")
         showForecast({id: $(this).data("location-id") });
       })
     })
