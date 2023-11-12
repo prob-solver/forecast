@@ -15,6 +15,6 @@ User input an address, show forecast. including temparature now, min and max etc
 
 
 # Todo
-Remember user's address selection history, easier to pick next time
-
-There are other data available
+- Remember user's address selection history, easier to pick next time
+- Display more weather data and icon
+- Display hourly forecast

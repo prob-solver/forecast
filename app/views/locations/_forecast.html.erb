@@ -12,7 +12,6 @@
 
 </div>
 
-
 <script id="forecast-info-template" type="x-tmpl-mustache">
   <table class='table'>
     <thead>
@@ -27,20 +26,21 @@
     <tbody>
       <tr>
         {{#forecast.timelines.daily}}
-          <td>{{values.temperatureMin}}°F | {{values.temperatureMax}}°F</td>
+          <td>{{#mathRound}}{{values.temperatureMin}}{{/mathRound}}°F | {{#mathRound}}{{values.temperatureMax}}{{/mathRound}}°F</td>
         {{/forecast.timelines.daily}}
       </tr>
       <tr>
         {{#forecast.timelines.daily}}
-          <td>{{values.windSpeedAvg}}mph</td>
+          <td>{{#mathRound}}{{values.windSpeedAvg}}{{/mathRound}}mph</td>
         {{/forecast.timelines.daily}}
       </tr>
     </tbody>
   </table>
-  <div>DataSource: {{fetch_from}}</div>
+  <div>DataFrom: {{fetch_from}}; Zip: {{postal_code}}</div>
 </script>
 
 
+<!-- todo: display hourly forecast */ -->
 <script id="hourly-forecast-template" type="x-tmpl-mustache">
   <table class='table'>
     <thead>

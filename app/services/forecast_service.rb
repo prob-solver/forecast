@@ -16,7 +16,7 @@ class ForecastService
       get_remote_forecast
     end
 
-    TomorrowForecast.new(fetch_from: fetch_from, data: forest_data)
+    TomorrowForecast.new(fetch_from: fetch_from, data: forest_data, postal_code: location.postal_code)
   end
 
   private

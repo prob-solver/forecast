@@ -48,7 +48,13 @@ function renderForecastHead(forecast) {
           return moment(render(date)).format('ddd D');
         }
       },
-      fetch_from: forecast.fetch_from
+      mathRound: function() {
+        return function (number, render) {
+          return Math.round(render(number))
+        }
+      },
+      fetch_from: forecast.fetch_from,
+      postal_code: forecast.postal_code
     }
   )
   $("#forecast-container").html(rendered);

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Api::V1::Forecasts", type: :request do
   describe "GET /api/v1/locations/:id/forecasts" do
     before do
-      allow(LocationSuggestionService).to receive(:get_place).and_return(
+      allow(LocationService).to receive(:get_place).and_return(
         Aws::LocationService::Types::Place.new(
           label: "78681, Round Rock, TX, USA",
           geometry: Aws::LocationService::Types::PlaceGeometry.new(point: [-97.6944, 30.516005]),
@@ -187,6 +187,11 @@ RSpec.describe "Api::V1::Forecasts", type: :request do
       it "return 200" do
         get "/api/v1/locations/a_location_id/forecasts"
         expect(response).to have_http_status(200)
+      end
+
+      it 'should return TomorrowForecast json' do
+        get "/api/v1/locations/a_location_id/forecasts"
+        expect(json_body).to include("fetch_from", "data", "postal_code")
       end
     end
 

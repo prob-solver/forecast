@@ -43,6 +43,8 @@
   <script type="module">
     import Autocomplete from "https://cdn.jsdelivr.net/gh/lekoala/bootstrap5-autocomplete@master/autocomplete.js";
 
+    let map;
+
     const opts = {
       onSelectItem: showForecast,
     };
@@ -58,17 +60,23 @@
       return $.get(`/api/v1/locations/${location_id}`)
     }
 
+    function initMap(location) {
+
+    }
+
     async function renderMap(location) {
       const loc = await getLocation(location.id);
-      console.log(loc)
       const position = loc.place.geometry.point;
 
       const apiKey = "v1.public.eyJqdGkiOiJhOGMwNmMwNy05MjM2LTQ0NzktYmNkMS03N2MyNWE3NzcxZDUifWULdYKeXFjvGZcTmGXNl5Wdc4z90zmfEc3lUJg_Q068lYX6jhzjLG_Bv3ok6R8tD23E2OSfdq2X34SkbyYluxehpzFWoMrNCRMLsWhy-91PhWGBJg00SM3fTbCQq7E5M0HnHrr2le0YouhDzxzVbfaNqkB_vB-iAEoCiOSdY4UmOtXfeD8OL5LRVBEqgdlT1StjyYfDTZ6SYpMsakn_t3HzhzFaamvpH2qC8udqQw92lAZkOlOLVJc4TeBd5yk2_gm-5G12bSIbngQtW5uKFBM24lG2gD1ACOe7Ei9Wo6uc1tKjTKQqfeLE6sFdXeS3jH5uQhsUhxwKVeKkYZXPRMw.NjAyMWJkZWUtMGMyOS00NmRkLThjZTMtODEyOTkzZTUyMTBi";
       const mapName = "explore.map.Esri";
       const region = "us-east-2";
 
-      console.log(location);
-      let map = new maplibregl.Map({
+      if (map) {
+        map.remove();
+      }
+
+      map = new maplibregl.Map({
         "container": 'map',
         "style": `https://maps.geo.${region}.amazonaws.com/maps/v0/maps/${mapName}/style-descriptor?key=${apiKey}`,
         "center": position, // starting position [lng, lat]

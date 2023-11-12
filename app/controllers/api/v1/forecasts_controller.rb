@@ -8,7 +8,7 @@ class Api::V1::ForecastsController < Api::V1::BaseController
   private
 
   def location
-    @location ||= LocationSuggestionService.find_location!(params.require(:location_id))
+    @location ||= LocationService.find_location!(params.require(:location_id))
   end
 
 end

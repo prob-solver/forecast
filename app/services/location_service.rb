@@ -1,10 +1,11 @@
-class LocationSuggestionService
+class LocationService
 
   class LocationNotFound < StandardError; end
   class InvalidQueryString < StandardError; end
 
   AWS_LOCATION_API_KEY = ENV['AWS_LOCATION_API_KEY']
   AWS_LOCATION_INDEX_NAME = ENV['AWS_LOCATION_INDEX_NAME']
+  AWS_REGION = 'us-east-2'
   MAX_RESULTS = 10
 
   # Get address suggestions from AWS Location Service
@@ -31,7 +32,6 @@ class LocationSuggestionService
 
     Location.new(place: place, id: place_id)
   end
-
 
   def self.get_place(place_id)
     begin
@@ -67,7 +67,7 @@ class LocationSuggestionService
 
   def self.client
     @client ||= Aws::LocationService::Client.new(
-      region: "us-east-2",
+      region: AWS_REGION,
       credentials: credentials
     )
   end

@@ -38,7 +38,7 @@ RSpec.describe "Api::V1::Locations", type: :request do
 
     context "place_id is valid" do
       before do
-        allow(LocationSuggestionService).to receive(:get_place).and_return(
+        allow(LocationService).to receive(:get_place).and_return(
           Aws::LocationService::Types::Place.new(
             label: "78681, Round Rock, TX, USA",
             geometry: Aws::LocationService::Types::PlaceGeometry.new(point: [-97.6944, 30.516005]),
@@ -62,7 +62,7 @@ RSpec.describe "Api::V1::Locations", type: :request do
 
     context 'place_id is invalid' do
       before do
-        allow(LocationSuggestionService).to receive(:get_place).and_return(nil)
+        allow(LocationService).to receive(:get_place).and_return(nil)
       end
       it 'should return 404' do
         get "/api/v1/locations/a_invalid_place_id"
