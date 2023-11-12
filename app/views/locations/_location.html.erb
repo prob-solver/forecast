@@ -50,9 +50,8 @@
 
 
     async function showForecast(location) {
-      renderChart(location);
       renderMap(location);
-      renderForecastInfo();
+      renderForecastInfo(location);
     }
 
     function getLocation(location_id) {
@@ -90,8 +89,5 @@
         showForecast({id: $(this).data("location-id") });
       })
     })
-
-
-
   </script>
 <% end %>

@@ -7,3 +7,62 @@
 <canvas id='chart-container' class="container">
 
 </canvas>
+
+<div id="hourly-forecast">
+
+</div>
+
+
+<script id="forecast-info-template" type="x-tmpl-mustache">
+  <table class='table'>
+    <thead>
+    <tr>
+      {{#forecast.timelines.daily}}
+      <th>
+        {{#formatDate}}{{time}}{{/formatDate}}
+      </th>
+      {{/forecast.timelines.daily}}
+    </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {{#forecast.timelines.daily}}
+          <td>{{values.temperatureMin}}°F | {{values.temperatureMax}}°F</td>
+        {{/forecast.timelines.daily}}
+      </tr>
+      <tr>
+        {{#forecast.timelines.daily}}
+          <td>{{values.windSpeedAvg}}mph</td>
+        {{/forecast.timelines.daily}}
+      </tr>
+    </tbody>
+  </table>
+  <div>DataSource: {{fetch_from}}</div>
+</script>
+
+
+<script id="hourly-forecast-template" type="x-tmpl-mustache">
+  <table class='table'>
+    <thead>
+    <tr>
+      {{#forecast.timelines.hourly}}
+      <th>
+        {{#formatHour}}{{time}}{{/formatHour}}
+      </th>
+      {{/forecast.timelines.hourly}}
+    </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {{#forecast.timelines.hourly}}
+          <td>{{values.temperature}}°F</td>
+        {{/forecast.timelines.hourly}}
+      </tr>
+      <tr>
+        {{#forecast.timelines.hourly}}
+          <td>{{values.windSpeed}}mph</td>
+        {{/forecast.timelines.hourly}}
+      </tr>
+    </tbody>
+  </table>
+</script>

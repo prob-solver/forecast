@@ -10,9 +10,9 @@ class ForecastService
 
   def get_forecast
     # reset fetch from
-    fetch_from = "cache"
+    fetch_from = "Cache"
     forest_data = Rails.cache.fetch(cache_key, expires_in: 30.minutes) do
-      fetch_from = "remote"
+      fetch_from = "API"
       get_remote_forecast
     end
 

@@ -17,14 +17,16 @@ ActiveStorage.start()
 
 
 import Chart from 'chart.js/auto'
-import 'moment'
+import moment from 'moment'
 import 'chartjs-adapter-moment'
 import maplibregl from 'maplibre-gl'
-//import 'maplibre-gl/dist/maplibre-gl.css';
+import Mustache from 'mustache'
 
 
 function getForecastData(location_id) {
-  return $.get(`/api/v1/locations/${location_id}/forecasts`)
+  return $.get(`/api/v1/locations/${location_id}/forecasts`).fail(function() {
+    alert('do not support forecast weather for this address')
+  });
 }
 
 async function renderForecastInfo(location) {
@@ -34,15 +36,31 @@ async function renderForecastInfo(location) {
   renderChart(forecast);
 }
 
-function renderForecastHead() {
-  $('#forecast-container').append()
+function renderForecastHead(forecast) {
+  let template = $('#forecast-info-template').html();
+
+  const rendered = Mustache.render(
+    template,
+    {
+      forecast: forecast.data,
+      formatDate: function() {
+        return function (date, render) {
+          return moment(render(date)).format('ddd D');
+        }
+      },
+      fetch_from: forecast.fetch_from
+    }
+  )
+  $("#forecast-container").html(rendered);
 }
 
 function renderChart(forecast) {
   const data = forecast.data.timelines.hourly.map(function(hourly_data) {
     return {
       "hour": new Date(hourly_data.time),
-      "temperature": hourly_data.values.temperature
+      "temperature": hourly_data.values.temperature,
+      "temperatureApparent": hourly_data.values.temperatureApparent,
+      "precipitationProbability": hourly_data.values.precipitationProbability
     }
   });
 
@@ -61,8 +79,21 @@ function renderChart(forecast) {
         labels: data.map(row => row.hour),
         datasets: [
           {
-            label: '5 Days temperature',
-            data: data.map(row => row.temperature)
+            label: 'Temperature',
+            data: data.map(row => row.temperature),
+            borderColor: 'rgb(255, 99, 132)'
+          },
+          {
+            label: 'Feels like',
+            data: data.map(row => row.temperatureApparent),
+            borderColor: 'rgb(153, 102, 255)'
+          },
+          {
+            label: "Precipiation",
+            data: data.map(row => row.precipitationProbability),
+            fill: 'origin',
+            borderColor: 'rgb(54, 162, 235)', //blue
+            backgroundColor: 'rgb(54, 162, 235)'
           }
         ]
       },
@@ -74,7 +105,7 @@ function renderChart(forecast) {
               format: "DD.MM.YYYY HH:mm",
               unit: "hour",
               displayFormats: {
-                'hour': 'dddd HH',
+                'hour': 'ddd ha',
                 'day': 'dddd',
                 'week': 'DD.MM',
                 'month': 'DD.MM',
@@ -91,3 +122,4 @@ function renderChart(forecast) {
 
 
 window.renderChart = renderChart;
+window.renderForecastInfo = renderForecastInfo;
