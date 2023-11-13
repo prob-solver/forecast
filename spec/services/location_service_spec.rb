@@ -87,5 +87,5 @@ RSpec.describe LocationService do
       end
     end
   end
-  
+
 end

@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+cd $(dirname $0)/..
+pidfile=tmp/pids/puma.pid
+statefile=tmp/puma.state
+
+
+copy_secrets() {
+  echo "Set secrets.yml from example file"
+  if [[ ! -f "config/secrets.yml" ]]; then
+   cp config/secrets.yml.example config/secrets.yml
+  fi
+}
+
+clear_logs(){
+  echo "Removing stale logs"
+  bundle exec rails log:clear LOGS=development
+}
+
+enable_caching(){
+  echo "Enabling caching"
+  touch tmp/caching-dev.txt
+}
+
+precompile_and_migrate() {
+  echo 'start assets compiling'
+  mkdir -p tmp/cache
+  bundle exec rails assets:precompile
+  echo 'finish assets compiling'
+}
+
+setup(){
+  echo 'bundle install'
+  bundle install
+  clear_logs
+  enable_caching
+  echo 'finish setup'
+}
+
+load_env() {
+  if [ -z ${RAILS_ENV} ];
+  then
+    export RAILS_ENV="$1"
+  fi;
+
+  if [ -z "${RAILS_SERVE_STATIC_FILES}" ];
+  then
+    if [ $RAILS_ENV = 'staging' ] || [ $RAILS_ENV = 'production' ];
+    then
+      export RAILS_SERVE_STATIC_FILES=true
+    fi;
+  fi;
+}
+
+case "$1" in
+start_dev)
+  setup
+  echo 'start migration'
+  bundle exec puma -C config/puma.rb
+;;
+start_prod)
+  setup
+  precompile_and_migrate
+  bundle exec puma -C config/puma.rb
+;;
+stop)
+  kill $(cat ${pidfile})
+;;
+*)
+  echo "Usage: stop|start_dev|start_prod"
+;;
+esac
