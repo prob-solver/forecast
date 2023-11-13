@@ -30,6 +30,11 @@ bundle exec rails s
 ![AutoComplete 2nd address](./doc/images/78729_autocomplete.png)
 ![Show weather for 2nd address](./doc/images/78729_selected.png)
 
+## Video
+
+https://youtu.be/UoMv3sh6lsM
+
+
 ## Requirement:
 User input an address, show forecast. including temparature now, min and max etc.
 
