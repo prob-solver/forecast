@@ -9,20 +9,17 @@ services:
       - 'data:/var/lib/redis/data'
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: bash -c " ./bin/web start_dev"
+    build: .
+    command: bash -c "bundle install; ./bin/web start_dev"
     tty: true
     stdin_open: true
     env_file: .env
     environment: &app_env
-      BUNDLE_PATH: /bundle/vendor
       RAILS_ENV: development
       WEBPACKER_DEV_SERVER_HOST: webpack
     volumes:
       - '.:/forecast'
-      - bundle_path:/bundle
+      - bundle_path:/usr/local/bundle/
       - node_modules:/app/node_modules
     ports:
       - '3000:3000'

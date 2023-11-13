@@ -2,7 +2,35 @@
 
 This is a demo of Forecast project.
 
-Requirement:
+
+# install
+
+## prerequisites
+- ruby 2.7.7 installed
+- redis installed
+
+
+
+```
+git clone https://github.com/prob-solver/forecast.git
+cd forecast
+bundle install
+cp .env.example .env
+
+// update .env file with your own keys
+
+bundle exec rails s
+
+```
+
+## screenshots
+
+![AutoComplete address](./doc/images/78681_autocomplete.png)
+![Show weather based on address](./doc/images/78681_selected.png)
+![AutoComplete 2nd address](./doc/images/78729_autocomplete.png)
+![Show weather for 2nd address](./doc/images/78729_selected.png)
+
+## Requirement:
 User input an address, show forecast. including temparature now, min and max etc.
 
 
