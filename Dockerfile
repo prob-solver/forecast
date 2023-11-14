@@ -50,7 +50,7 @@ COPY Gemfile Gemfile.lock package.json yarn.lock ./
 # potentially other binaries as command overrides without depending on
 # bundle exec.
 # This is mainly due for production compatibility assurance.
-RUN bundle install -j 10
+RUN bundle install
 
 
 # Copy in everything from the current directory relative to the Dockerfile
