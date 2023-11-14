@@ -61,4 +61,6 @@ COPY . .
 # the Rails Docker image without having to copy them to the Docker host
 #VOLUME ["$INSTALL_PATH/public"]
 # CMD ["./bin/web", "start_staging"]
+
+EXPOSE 3000
 ENTRYPOINT ["./bin/docker-entrypoint.sh"]
