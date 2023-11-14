@@ -14,15 +14,15 @@ module Api
 
       def record_not_found(_exception)
         render json: {
-          error: "record_not_found",
-          message: "Record not found"
+          error: 'record_not_found',
+          message: 'Record not found'
         }, status: 404
       end
 
-      def bad_request(exception)
+      def bad_request(_exception)
         render json: {
-          error: "bad_request",
-          message: "Bad request"
+          error: 'bad_request',
+          message: 'Bad request'
         }, status: 400
       end
     end

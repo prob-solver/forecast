@@ -1,5 +1,4 @@
 class LocationService
-
   class LocationNotFound < StandardError; end
   class InvalidQueryString < StandardError; end
 
@@ -21,9 +20,7 @@ class LocationService
   def self.find_location!(place_id)
     place = get_place(place_id)
 
-    if place.blank?
-      raise LocationNotFound, "location not found with id=#{place_id}"
-    end
+    raise LocationNotFound, "location not found with id=#{place_id}" if place.blank?
 
     if place.postal_code.blank?
       resp = client.search_place_index_for_position opts(position: place.geometry.point)
@@ -34,24 +31,20 @@ class LocationService
   end
 
   def self.get_place(place_id)
-    begin
-      result = client.get_place(opts(place_id: place_id))
-      result.place
-    rescue Aws::LocationService::Errors::ValidationException => e
-      # invalid place id
-      return nil
-    end
+    result = client.get_place(opts(place_id: place_id))
+    result.place
+  rescue Aws::LocationService::Errors::ValidationException => e
+    # invalid place id
+    nil
   end
-
-  private
 
   def self.validate_suggestion_query!(query_string)
-    if query_string.blank?
-      raise InvalidQueryString, 'Query must have length at least 1'
-    end
+    return unless query_string.blank?
+
+    raise InvalidQueryString, 'Query must have length at least 1'
   end
 
-  def self.opts(options={})
+  def self.opts(options = {})
     options.merge(
       index_name: AWS_LOCATION_INDEX_NAME,
       key: AWS_LOCATION_API_KEY

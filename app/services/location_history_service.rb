@@ -4,7 +4,8 @@ class LocationHistoryService
   def self.add(session, location)
     session[:location_histories] ||= []
 
-    return if session[:location_histories].any?{|h| h['location_id'] == location.id}
+    return if session[:location_histories].any? { |h| h['location_id'] == location.id }
+
     session[:location_histories].pop if session[:location_histories].size > HISTORY_MAX
 
     session[:location_histories].unshift(

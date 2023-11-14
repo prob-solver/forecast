@@ -7,10 +7,10 @@ module Tomorrow
     TEMPERATURE_UNIT = 'imperial' # could be metric
 
     def self.forecast(zip)
-      self.get("/v4/weather/forecast", query(location: zip))
+      get('/v4/weather/forecast', query(location: zip))
     end
 
-    def self.query(query_hash={})
+    def self.query(query_hash = {})
       {
         query: query_hash.merge(default_params)
       }
@@ -18,8 +18,7 @@ module Tomorrow
     private_class_method :query
 
     def self.default_params
-      {apikey: API_KEY, units: TEMPERATURE_UNIT}
+      { apikey: API_KEY, units: TEMPERATURE_UNIT }
     end
-
   end
 end

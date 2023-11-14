@@ -1,5 +1,4 @@
 class ForecastService
-
   class InvalidLocation < StandardError; end
   class AmbitiousLocation < StandardError; end
   class ForestBadRequest < StandardError; end
@@ -10,9 +9,9 @@ class ForecastService
 
   def get_forecast
     # reset fetch from
-    fetch_from = "Cache"
+    fetch_from = 'Cache'
     forest_data = Rails.cache.fetch(cache_key, expires_in: 30.minutes) do
-      fetch_from = "API"
+      fetch_from = 'API'
       get_remote_forecast
     end
 
@@ -29,10 +28,8 @@ class ForecastService
 
   def get_remote_forecast
     resp = Tomorrow::Client.forecast(location.postal_code)
-    if resp.success?
-      resp.to_hash.merge(load_at: Time.now)
-    else
-      raise ForestBadRequest, {service: "tomorrow", code: resp.code, message: resp.message}.as_json
-    end
+    raise ForestBadRequest, { service: 'tomorrow', code: resp.code, message: resp.message }.as_json unless resp.success?
+
+    resp.to_hash.merge(load_at: Time.now)
   end
 end

@@ -1,5 +1,4 @@
 class Api::V1::LocationsController < Api::V1::BaseController
-
   def suggestions
     suggestions = LocationService.search_suggestions(params.require(:query))
     render json: format_suggestions(suggestions)
@@ -13,6 +12,6 @@ class Api::V1::LocationsController < Api::V1::BaseController
   private
 
   def format_suggestions(suggestions)
-    suggestions.map{|s| {id: s['place_id'], text: s['text']}}
+    suggestions.map { |s| { id: s['place_id'], text: s['text'] } }
   end
 end
