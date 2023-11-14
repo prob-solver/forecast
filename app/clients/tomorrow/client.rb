@@ -3,7 +3,7 @@ module Tomorrow
     include HTTParty
 
     base_uri 'api.tomorrow.io'
-    API_KEY = ENV.fetch('TOMORROW_API_KEY')
+    API_KEY = ENV['TOMORROW_API_KEY']
     TEMPERATURE_UNIT = 'imperial' # could be metric
 
     def self.forecast(zip)

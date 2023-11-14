@@ -46,6 +46,10 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'rubocop', require: false
   gem 'spring'
+  gem "capistrano", "~> 3.17", require: false
+  gem 'capistrano-dotenv', require: false
+  gem 'capistrano-rails', require: false
+  gem 'rvm1-capistrano3', require: false
 end
 
 group :test do
